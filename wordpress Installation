@@ -1,0 +1,86 @@
+-------------------- Wordpress Application Installation in Ubuntu ------------
+
+* Install apache2/nginx , Mariadb/mysql , PHP.
+* create a Database for wordpress.
+* Install wordpress on buuntu 22.04
+
+  step1: Installing Apache2
+
+> sudo apt-get update
+> sudo apt-get install apache2
+> sudo systemctl start apache2
+> sudo systemctl status apache2
+
+  step2: Configure the firewall
+  
+> sudo ufw enable
+> sudo ufw app list
+> sudo ufw allow 'Apache'
+> sudo ufw allow 'OpenSSH'
+> sudo ufw status
+
+  step3: Instaling mysql
+  
+> sudo apt-get update
+> sudo apt-get install mysql-server mysql-client -y
+> mysql --version
+> sudo systemctl start mysql
+> sudo systemctl status mysql
+
+  step4: Configure mysql server
+
+> sudo mysql
+> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password by 'Techvblogs@786';
+> exit;
+> sudo mysql_secure_installation
+> 
+    Enter the password for user root: type your set password and then press ENTER.
+    Change the password for root? Press N, then ENTER.
+    Remove anonymous users? Press Y, then ENTER.
+    Disallow root login remotely? Press Y, then ENTER.
+    Remove test database and access to it? Press Y, then ENTER.
+    Reload privilege tables now? Press Y, then ENTER.
+ 
+ > mysql -u root -p
+ > FLUSH PRIVILEGES;
+ > exit;
+ 
+   step5: Installing PHP
+   
+ > sudo apt update
+ > sudo apt upgrade
+ > sudo apt install php8.1 -y
+ > php --version
+ > sudo apt-get install php8.1-PACKAGE_NAME
+ > sudo apt-get install -y php8.1-cli php8.1-common php8.1-mysql php8.1-zip php8.1-gd php8.1-mbstring php8.1-curl php8.1-xml php8.1-bcmath
+ > php -m
+ 
+ 
+   step5: Installing Wordpress on ubuntu
+  
+> sudo wget -c http://wordpress.org/latest.tar.gz
+> sudo tar -xzvf latest.tar.gz
+> sudo mv wordpress/* /var/www/html
+> sudo chown -R www-data:www-data /var/www/html
+> sudo chmod -R 775 /var/www/html
+
+   step6: Creating Database for wordpress
+  
+ > sudo mysql -u root -p
+ > mysql> CREATE DATABASE wp_dbname;
+ > mysql> CREATE USER 'db_username'@'%' IDENTIFIED WITH mysql_native_password BY 'db_password';
+ > mysql> GRANT ALL ON wp_dbname.* TO 'db_username'@'%';
+ > mysql> FLUSH PRIVILEGES;
+ > mysql> EXIT;
+ 
+   step7: wp-config file
+   
+ > cd /var/www/html
+ > sudo mv wp-config-sample.php wp-config.php
+ > sudo nano wp-config.php
+   //change the DB name, username, password
+ > sudo systemctl restart apache2.service
+ > sudo systemctl restart mysql.service 
+ 
+ http://ip_addr
+     
